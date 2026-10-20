@@ -4,23 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Student {
+    private static long nextId = 1;
 
     private final String name;
-    // тут статик поле
     private final long studentID;
     private int course;
     private State state;
     private final List<Integer> grades;
 
     private Student(String name) {
-        this.studentID = ++id;
+        this.studentID = nextId++;
         this.name = name;
         this.grades = new ArrayList<>();
         this.course = 1;
         this.state = State.ACTIVE;
     }
 
-    // тут статик метод
+    static Student create(String name) {
+        return new Student(name);
+    }
 
     public String getName() {
         return name;
@@ -28,6 +30,13 @@ public class Student {
 
     public List<Integer> getGrades() {
         return grades;
+    }
+
+    public void addGrade(int grade) {
+        if (grade < 2 || grade > 5) {
+            throw new IllegalArgumentException("Оценка должна быть от 2 до 5");
+        }
+        grades.add(grade);
     }
 
     public double average() {
@@ -51,6 +60,8 @@ public class Student {
 
     private String report() {
         return "Студент: " + name + System.lineSeparator()
+                + "Курс: " + course + System.lineSeparator()
+                + "Статус: " + state + System.lineSeparator()
                 + "Оценки: " + grades + System.lineSeparator()
                 + "Средний балл: " + average();
     }
